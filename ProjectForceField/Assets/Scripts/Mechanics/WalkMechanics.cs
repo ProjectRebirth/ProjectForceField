@@ -32,10 +32,10 @@ public class WalkMechanics : MonoBehaviour {
 		float xSide = zForward;
 		float zSide = -xForward;
 
-		Vector3 goalSpeed = new Vector3 (xForward, 0, zForward) * lastForwardInput;
-		goalSpeed += new Vector3 (xSide, 0, zSide) * lastSideInput;
-		goalSpeed = goalSpeed.normalized * Mathf.Sqrt (lastSideInput * lastSideInput / 2 + lastForwardInput * lastForwardInput / 2);
-		print (goalSpeed);
+		Vector3 goalSpeed = new Vector3 (xForward, 0, zForward).normalized * lastForwardInput;
+		goalSpeed += new Vector3 (xSide, 0, zSide).normalized * lastSideInput;
+		goalSpeed = goalSpeed.normalized * Mathf.Max (Mathf.Abs (lastSideInput), Mathf.Abs (lastForwardInput));
+		//print (goalSpeed);
 		goalSpeed *= baseStats.walkSpeed;
 		goalSpeed += new Vector3 (0, rigid.velocity.y, 0);
 
@@ -44,7 +44,7 @@ public class WalkMechanics : MonoBehaviour {
 	}
 
 	public void jump(bool jumpPressed) {
-		print (baseStats.getInAir());
+		//print (baseStats.getInAir());
 		if (jumpPressed && !baseStats.getInAir ()) {
 			rigid.AddForce (Vector3.up * 100 * baseStats.jumpHeight);
 		}
